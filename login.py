@@ -1,6 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
 import time
 
 driver = webdriver.Chrome()
@@ -8,32 +8,35 @@ driver.maximize_window()
 driver.get('https://admin-dev.goopter.com/')
 
 # login
-
-username_text = driver.find_element(By.NAME, 'username')
-username_text.send_keys('tomdev')
-
-password_text = driver.find_element(By.NAME, 'password')
-password_text.send_keys('20230130')
-
-login_btn = driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div[1]/form/div/div[3]/div/div/div/button').click()
+username_text = driver.find_element(By.NAME, 'username').send_keys('tomdev')
+password_text = driver.find_element(By.NAME, 'password').send_keys('20230130')
+driver.find_element(By.XPATH, "//button[contains(text(),'Login')]").click()
 
 time.sleep(3)
 
-# sidebar element
-
-element = driver.find_element(By.XPATH,
-                              '/html/body/div[1]/div/section/section/aside[2]/div/div/div[2]/ul/li[16]/span[2]').click()
-
-time.sleep(7)
-
-# edit - General
-edit_btn = driver.find_element(By.XPATH,
-                               '//*[@id="root"]/div/section/section/main/div[2]/div[2]/div[1]/div[3]/div[2]').click()
+# From the left panel of Admin main page, click Settings
+driver.find_element(By.XPATH, '//li[@class="ant-menu-item"][.//span/text() = "Settings"]').click()
+title_line = driver.find_element(By.CLASS_NAME, 'wrapper-title-line').text
+assert 'Settings Overview' in title_line, '"Settings" page is not displayed.'
 
 time.sleep(3)
 
-# Business Features
-basic_btn = driver.find_element(By.XPATH, '//*[@id="rc-tabs-0-tab-business_features"]').click()
+# Choose General and click Edit button
+driver.find_element(By.XPATH, '//div[@class="setting-card"][./div[@class="setting-card-title"]/text() = "General"]').click()
+
+
+time.sleep(3)
+
+# Click the forth section 'Business Features'
+tab = driver.find_element(By.XPATH, '//div[@class="ant-tabs-tab"][./div[@class="ant-tabs-tab-btn"]/text() = "Business Features"]')
+actions = ActionChains(driver)
+actions.move_to_element(tab)
+actions.move_to_element_with_offset(tab, 1, 10)
+actions.click()
+actions.perform()
+
+time.sleep(3)
+#driver.find_element(By.XPATH, '//div[@class="ant-tabs-tab"][./div[@class="ant-tabs-tab-btn"]/text() = "Business Features"]').click()
 
 # Parking - Paid
 parking = driver.find_element(By.XPATH,
