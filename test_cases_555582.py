@@ -13,13 +13,12 @@ driver.get('https://admin-dev.goopter.com/')
 # login
 username_text = driver.find_element(By.NAME, 'username').send_keys('tomdev')
 password_text = driver.find_element(By.NAME, 'password').send_keys('20230130')
-driver.find_element(By.XPATH, "//button[contains(text(),'Login')]").click()
+driver.find_element(By.XPATH, "//button[text()='Login']").click()
 
 time.sleep(3)
 
 # From the left panel of Admin main page, click Settings
 driver.find_element(By.XPATH, '//li[@class="ant-menu-item"][.//span/text()="Settings"]').click()
-title_line = driver.find_element(By.CLASS_NAME, 'wrapper-title-line').text
 
 time.sleep(3)
 
